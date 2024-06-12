@@ -791,7 +791,7 @@ def change_f0_method(f0method8):
         visible = False
     return {"visible": visible, "__type__": "update"}
 
-def download_assets():
+def download_assets(progres=gr.Progress()):
     base_url = "https://huggingface.co/lj1995/VoiceConversionWebUI/resolve/main/hubert_base.pt?download=true"
     assets = {
         "hubert_base.pt": "hubert/hubert_base.pt",
@@ -822,12 +822,10 @@ def download_assets():
     return "\n".join(messages)  # Return all messages as a single string
 
 
-with gr.Blocks(title="Stable Voice WebUI") as app:
+with gr.Blocks(title="Stable Voice") as app:
     gr.Markdown("# Stable Voice WebUI")
-    gr.Markdown("This software is open source under the MIT license. The author does not have any control over the software. Users who use the software and distribute the sounds exported by the software are solely responsible. <br>If you do not agree with this clause, you cannot use or reference any codes and files within the software package. See the root directory <b>Agreement-LICENSE.txt</b> for details.")
-    gr.Textbox()
-    gr.Button("Download Assets").click(download_assets)
-    
+    gr.Markdown("This is based on a RVC project but upgradings are made to make it more stable and user-friendly. This is mainly for Windows users with Python 3.11.")
+
     with gr.Tabs():
         with gr.TabItem("Download base assets"):
             status_text = gr.Textbox(label="Download Status", lines=10, interactive=False)  # Textbox for status messages

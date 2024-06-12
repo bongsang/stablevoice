@@ -5,6 +5,7 @@ Stable Voice WebUI is not an independent model but a framework designed to facil
 ## Environment
 The environment has been reconfigured based on Python 3.11 to support the latest features of various libraries.
 
+
 ## Installation
 ### Create virtual environments
 You can use any virtual environment but I recommend using venv because the venv module supports creating lightweight "virtual environments", each with their own independent set of Python packages installed in their site directories. And, also you can use anaconda environment together.
@@ -27,9 +28,7 @@ python -m pip install --upgrade pip
 ```bash
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 ```
-
 Or,
-
 #### With CUDA 12.1
 ```bash
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
@@ -43,11 +42,13 @@ pip install -r requirements.txt
 ```
 
 ## Run
-### MacOS
-可以通过 `run.sh` 来安装依赖
+For VS Code, Ctrl+F5 in main.py
+
+Or,
 ```bash
-sh ./run.sh
+(.venv) python main.py
 ```
+
 
 ## 其他预模型准备
 RVC需要其他一些预模型来推理和训练。
