@@ -21,44 +21,25 @@ python -m pip install --upgrade pip
 ```
 
 ### Install PyTorch
-- [PyTorch Official Guide](https://pytorch.org/get-started/locally/)
+[PyTorch Official Guide](https://pytorch.org/get-started/locally/)
 
 #### With CUDA 11.8
 ```bash
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 ```
+
 Or,
-```bash
-conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
-```
 
 #### With CUDA 12.1
 ```bash
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 ```
-Or,
-```bash
-conda install pytorch torchvision torchaudio pytorch-cuda=12.1 -c pytorch -c nvidia
-```
 
-### Install Python Libraries
+### Install required libraries
+You don't need to install Fairseq separately. There are many errors when trying to install it on Windows, and I also spent a lot of time dealing with this. To make things easier, I included the wheel locally. You can install all the libraries with just one line. If you're happy with it, please give it a star.
+
 ```bash
 pip install -r requirements.txt
-```
-
-### Install Fairseq
-[Official Fairseq github](https://github.com/facebookresearch/fairseq)
-
-I think, Fairseq git repository is not maintained any more expecially for Windows environment. Firstly, try to install along the guide of the official repository. However, if you are a Python 3.11.x user and have got errors then use my pre-compiled wheel. Also, it doesn't require Administrator's terminal.
-
-For Windows user,
-```bash
-pip install libs/fairseq/fairseq-0.12.3.1-cp311-cp311-win_amd64.whl
-```
-
-For Linux user,
-```bash
-pip install libs/fairseq/fairseq-0.12.3.1-cp311-cp311-linux_x86_64.whl
 ```
 
 ## Run

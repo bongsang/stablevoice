@@ -21,7 +21,8 @@ decorator==5.1.1
 dnspython==2.6.1
 einops==0.8.0
 email_validator==2.1.1
-fairseq @ file:///D:/projects/stablevoice/libs/fairseq/fairseq-0.12.3.1-cp311-cp311-win_amd64.whl#sha256=f71ea02bb183198c7c6d408e907dea4a3a4e53032c11d10f04ecc917343e2d39
+fairseq @ https://github.com/bongsang/stablevoice/raw/main/libs/fairseq/fairseq-0.12.3.1-cp311-cp311-win_amd64.whl#sha256=f71ea02bb183198c7c6d408e907dea4a3a4e53032c11d10f04ecc917343e2d39 ; sys_platform == 'win32'
+fairseq @ https://github.com/bongsang/stablevoice/raw/main/libs/fairseq/fairseq-0.12.3.1-cp311-cp311-linux_x86_64.whl#sha256=a92d9535b4ecb828056b076777ebb551eab2b39c09a553513b712782ec655ddc ; sys_platform == 'linux'
 faiss-cpu==1.8.0
 fastapi==0.111.0
 fastapi-cli==0.0.4
