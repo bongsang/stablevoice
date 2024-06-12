@@ -1,106 +1,59 @@
-<div align="center">
+# Stable Voice WebUI
+Stable Voice WebUI is not an independent model but a framework designed to facilitate easy comparison and analysis of various upcoming voice clone models in one place. It aims to promote global collaboration and development toward establishing a global standard. Initially, This is based on RVC-Project.
 
-<h1>Retrieval-based-Voice-Conversion-WebUI</h1>
-一个基于VITS的简单易用的变声框架<br><br>
 
-[![madewithlove](https://img.shields.io/badge/made_with-%E2%9D%A4-red?style=for-the-badge&labelColor=orange
-)](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI)
+## Environment
+The environment has been reconfigured based on Python 3.11 to support the latest features of various libraries.
 
-<img src="https://counter.seku.su/cmoe?name=rvc&theme=r34" /><br>
+## Installation
+### Create virtual environments
+You can use any virtual environment but I recommend using venv because the venv module supports creating lightweight "virtual environments", each with their own independent set of Python packages installed in their site directories. And, also you can use anaconda environment together.
 
-[![Open In Colab](https://img.shields.io/badge/Colab-F9AB00?style=for-the-badge&logo=googlecolab&color=525252)](https://colab.research.google.com/github/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/blob/main/Retrieval_based_Voice_Conversion_WebUI.ipynb)
-[![Licence](https://img.shields.io/badge/LICENSE-MIT-green.svg?style=for-the-badge)](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/blob/main/LICENSE)
-[![Huggingface](https://img.shields.io/badge/🤗%20-Spaces-yellow.svg?style=for-the-badge)](https://huggingface.co/lj1995/VoiceConversionWebUI/tree/main/)
-
-[![Discord](https://img.shields.io/badge/RVC%20Developers-Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/HcsmBBGyVk)
-
-[**更新日志**](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/blob/main/docs/Changelog_CN.md) | [**常见问题解答**](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E7%AD%94) | [**AutoDL·5毛钱训练AI歌手**](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/wiki/Autodl%E8%AE%AD%E7%BB%83RVC%C2%B7AI%E6%AD%8C%E6%89%8B%E6%95%99%E7%A8%8B) | [**对照实验记录**](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/wiki/Autodl%E8%AE%AD%E7%BB%83RVC%C2%B7AI%E6%AD%8C%E6%89%8B%E6%95%99%E7%A8%8B](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/wiki/%E5%AF%B9%E7%85%A7%E5%AE%9E%E9%AA%8C%C2%B7%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95)) | [**在线演示**](https://modelscope.cn/studios/FlowerCry/RVCv2demo)
-
-[**English**](./docs/en/README.en.md) | [**中文简体**](./README.md) | [**日本語**](./docs/jp/README.ja.md) | [**한국어**](./docs/kr/README.ko.md) ([**韓國語**](./docs/kr/README.ko.han.md)) | [**Français**](./docs/fr/README.fr.md) | [**Türkçe**](./docs/tr/README.tr.md) | [**Português**](./docs/pt/README.pt.md)
-
-</div>
-
-> 底模使用接近50小时的开源高质量VCTK训练集训练，无版权方面的顾虑，请大家放心使用
-
-> 请期待RVCv3的底模，参数更大，数据更大，效果更好，基本持平的推理速度，需要训练数据量更少。
-
-<table>
-   <tr>
-		<td align="center">训练推理界面</td>
-		<td align="center">实时变声界面</td>
-	</tr>
-  <tr>
-		<td align="center"><img src="https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/assets/129054828/092e5c12-0d49-4168-a590-0b0ef6a4f630"></td>
-    <td align="center"><img src="https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/assets/129054828/730b4114-8805-44a1-ab1a-04668f3c30a6"></td>
-	</tr>
-	<tr>
-		<td align="center">go-web.bat</td>
-		<td align="center">go-realtime-gui.bat</td>
-	</tr>
-  <tr>
-    <td align="center">可以自由选择想要执行的操作。</td>
-		<td align="center">我们已经实现端到端170ms延迟。如使用ASIO输入输出设备，已能实现端到端90ms延迟，但非常依赖硬件驱动支持。</td>
-	</tr>
-</table>
-
-## 简介
-本仓库具有以下特点
-+ 使用top1检索替换输入源特征为训练集特征来杜绝音色泄漏
-+ 即便在相对较差的显卡上也能快速训练
-+ 使用少量数据进行训练也能得到较好结果(推荐至少收集10分钟低底噪语音数据)
-+ 可以通过模型融合来改变音色(借助ckpt处理选项卡中的ckpt-merge)
-+ 简单易用的网页界面
-+ 可调用UVR5模型来快速分离人声和伴奏
-+ 使用最先进的[人声音高提取算法InterSpeech2023-RMVPE](#参考项目)根绝哑音问题。效果最好（显著地）但比crepe_full更快、资源占用更小
-+ A卡I卡加速支持
-
-点此查看我们的[演示视频](https://www.bilibili.com/video/BV1pm4y1z7Gm/) !
-
-## 环境配置
-以下指令需在 Python 版本大于3.8的环境中执行。  
-
-### Windows/Linux/MacOS等平台通用方法
-下列方法任选其一。
-#### 1. 通过 pip 安装依赖
-1. 安装Pytorch及其核心依赖，若已安装则跳过。参考自: https://pytorch.org/get-started/locally/
 ```bash
-pip install torch torchvision torchaudio
+python -m venv .venv
+.venv/Scripts/activate
 ```
-2. 如果是 win 系统 + Nvidia Ampere 架构(RTX30xx)，根据 #21 的经验，需要指定 pytorch 对应的 cuda 版本
+e.g. In Windows, you may see your prompt like this: (.venv) (base) D:\projects\stablevoice-webui> _
+
+### PIP Upgrade
 ```bash
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu117
+python -m pip install --upgrade pip
 ```
-3. 根据自己的显卡安装对应依赖
-- N卡
+
+### Install PyTorch
+[PyTorch Official Guide](https://pytorch.org/get-started/locally/)
+
+#### With CUDA 11.8
+```bash
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+```
+Or,
+```bash
+conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
+```
+
+#### With CUDA 12.1
+```bash
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+```
+Or,
+```bash
+conda install pytorch torchvision torchaudio pytorch-cuda=12.1 -c pytorch -c nvidia
+```
+
+### Install Python Libraries
 ```bash
 pip install -r requirements.txt
 ```
-- A卡/I卡
+
+### Install Fairseq
+For Windows users, open new prompt outside of VSCode as <span style="color:red">**Administrator**</span>. If not, you will get errors.
+
 ```bash
-pip install -r requirements-dml.txt
-```
-- A卡ROCM(Linux)
-```bash
-pip install -r requirements-amd.txt
-```
-- I卡IPEX(Linux)
-```bash
-pip install -r requirements-ipex.txt
+pip install git+https://github.com/One-sixth/fairseq.git
 ```
 
-#### 2. 通过 poetry 来安装依赖
-安装 Poetry 依赖管理工具，若已安装则跳过。参考自: https://python-poetry.org/docs/#installation
-```bash
-curl -sSL https://install.python-poetry.org | python3 -
-```
-
-通过 Poetry 安装依赖时，python 建议使用 3.7-3.10 版本，其余版本在安装 llvmlite==0.39.0 时会出现冲突
-```bash
-poetry init -n
-poetry env use "path to your python.exe"
-poetry run pip install -r requirments.txt
-```
-
+## Run
 ### MacOS
 可以通过 `run.sh` 来安装依赖
 ```bash
