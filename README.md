@@ -21,7 +21,7 @@ python -m pip install --upgrade pip
 ```
 
 ### Install PyTorch
-[PyTorch Official Guide](https://pytorch.org/get-started/locally/)
+- [PyTorch Official Guide](https://pytorch.org/get-started/locally/)
 
 #### With CUDA 11.8
 ```bash
@@ -47,10 +47,18 @@ pip install -r requirements.txt
 ```
 
 ### Install Fairseq
-For Windows users, open new prompt outside of VSCode as <span style="color:red">**Administrator**</span>. If not, you will get errors.
+[Official Fairseq github](https://github.com/facebookresearch/fairseq)
 
+I think, Fairseq git repository is not maintained any more expecially for Windows environment. Firstly, try to install along the guide of the official repository. However, if you are a Python 3.11.x user and have got errors then use my pre-compiled wheel. Also, it doesn't require Administrator's terminal.
+
+For Windows user,
 ```bash
-pip install git+https://github.com/One-sixth/fairseq.git
+pip install libs/fairseq/fairseq-0.12.3.1-cp311-cp311-win_amd64.whl
+```
+
+For Linux user,
+```bash
+pip install libs/fairseq/fairseq-0.12.3.1-cp311-cp311-linux_x86_64.whl
 ```
 
 ## Run
