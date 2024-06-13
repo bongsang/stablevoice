@@ -829,11 +829,6 @@ with gr.Blocks(title="Stable Voice WebUI") as app:
     gr.Button("Download Assets").click(download_assets)
     
     with gr.Tabs():
-        with gr.TabItem("Download base assets"):
-            status_text = gr.Textbox(label="Download Status", lines=10, interactive=False)  # Textbox for status messages
-            download_button = gr.Button("Download Assets")  # Button to trigger download
-            download_button.click(fn=download_assets, inputs=[], outputs=status_text)  # Link button to function
-
         with gr.TabItem("Model Inference"):
             with gr.Row():
                 sid0 = gr.Dropdown("Inferencing voice:", choices=sorted(names))
