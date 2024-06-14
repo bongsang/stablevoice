@@ -791,44 +791,198 @@ def change_f0_method(f0method8):
         visible = False
     return {"visible": visible, "__type__": "update"}
 
-def download_assets():
-    base_url = "https://huggingface.co/lj1995/VoiceConversionWebUI/resolve/main/hubert_base.pt?download=true"
-    assets = {
-        "hubert_base.pt": "hubert/hubert_base.pt",
-        "pretrained/": "pretrained/",
-        "pretrained_v2/": "pretrained_v2/",
-        "uvr5_weights/": "uvr5_weights/"
-    }
-    messages = []  # Collect status messages
-    for asset_name, save_path in assets.items():
-        # url = urljoin(base_url, asset_name)
-        url = f"https://huggingface.co/lj1995/VoiceConversionWebUI/resolve/main/{asset_name}?download=true"
-        local_path = os.path.join("./assets", save_path)
-        if asset_name.endswith('/'):
-            if not os.path.exists(local_path):
-                os.makedirs(local_path)
-            messages.append(f"Directory created at {local_path}. Manual download required for directory contents.")
+
+# Assets Manager
+assets_dir = "assets/"
+assets_file_path = os.path.join(assets_dir, "assets.txt")
+with open(assets_file_path, 'r') as f:
+    assets_list = f.read().splitlines()
+
+def select_all():
+    return [asset for asset in assets_list if asset not in get_preselected_files()]
+
+def cancel_all():
+    return []
+
+def download_file(asset_name):
+    if asset_name.split(".")[-1] == "exe":
+        download_asset_name = "bin/" + asset_name
+    elif "hubert" in asset_name:
+        download_asset_name = "hubert/" + asset_name
+    elif "rmvpe" in asset_name:
+        download_asset_name = "rmvpe/" + asset_name
+    else:
+        download_asset_name = asset_name
+    asset_path = os.path.join(assets_dir, download_asset_name)
+    base_url = "https://huggingface.co/lj1995/VoiceConversionWebUI/resolve/main/"
+    url = f"{base_url}{asset_name}?download=true"
+    os.makedirs(os.path.dirname(asset_path), exist_ok=True)
+    response = requests.get(url)
+    if response.status_code == 200:
+        with open(asset_path, 'wb') as file:
+            file.write(response.content)
+        return f"Downloaded: {asset_name}"
+    else:
+        return f"Failed to download: {asset_name}"
+
+def remove_file(asset_name):
+    if asset_name.split(".")[-1] == "exe":
+        asset_name = "bin/" + asset_name
+    elif "hubert" in asset_name:
+        asset_name = "hubert/" + asset_name
+    elif "rmvpe" in asset_name:
+        asset_name = "rmvpe/" + asset_name
+    asset_path = os.path.join(assets_dir, asset_name)
+
+    if os.path.exists(asset_path):
+        os.remove(asset_path)
+        return f"Removed: {asset_name}"
+    else:
+        return f"File not found: {asset_name}"
+
+def get_preselected_files():
+    downloaded_files = []
+    for asset_name in assets_list:
+        if asset_name.split(".")[-1] == "exe":
+            download_asset_name = "bin/" + asset_name
+        elif "hubert" in asset_name:
+            download_asset_name = "hubert/" + asset_name
+        elif "rmvpe" in asset_name:
+            download_asset_name = "rmvpe/" + asset_name
         else:
-            if not os.path.exists(local_path):
-                response = requests.get(url)
-                if response.status_code == 200:
-                    with open(local_path, 'wb') as f:
-                        f.write(response.content)
-                    messages.append(f"Downloaded {asset_name} to {local_path}")
-                else:
-                    messages.append(f"Failed to download {asset_name} from {url}")
-            else:
-                messages.append(f"{asset_name} already exists at {local_path}")
-    return "\n".join(messages)  # Return all messages as a single string
+            download_asset_name = asset_name
 
+        asset_path = os.path.join(assets_dir, download_asset_name)
+        
+        if os.path.exists(asset_path):
+            downloaded_files.append(asset_name)
+  
+    return downloaded_files
 
-with gr.Blocks(title="Stable Voice WebUI") as app:
+def update_buttons(asset_name):
+    if asset_name.split(".")[-1] == "exe":
+        download_asset_name = "bin/" + asset_name
+    elif "hubert" in asset_name:
+        download_asset_name = "hubert/" + asset_name
+    elif "rmvpe" in asset_name:
+        download_asset_name = "rmvpe/" + asset_name
+    else:
+        download_asset_name = asset_name
+
+    asset_path = os.path.join(assets_dir, download_asset_name)
+    return os.path.exists(asset_path), not os.path.exists(asset_path)
+
+def download_all():
+    messages = []
+    for asset_name in assets_list:
+        if asset_name.split(".")[-1] == "exe":
+            download_asset_name = "bin/" + asset_name
+        elif "hubert" in asset_name:
+            download_asset_name = "hubert/" + asset_name
+        elif "rmvpe" in asset_name:
+            download_asset_name = "rmvpe/" + asset_name
+        else:
+            download_asset_name = asset_name
+
+        asset_path = os.path.join(assets_dir, download_asset_name)
+        if not os.path.exists(asset_path):
+            message = download_file(asset_name)
+            messages.append(message)
+    
+    return "\n".join(messages)
+
+def remove_all(selected_files):
+    messages = []
+    for asset_name in selected_files:
+        message = remove_file(asset_name)
+        messages.append(message)
+    return "\n".join(messages)
+
+with gr.Blocks(title="Stable Voice WebUI", theme=gr.themes.Soft()) as app:
     gr.Markdown("# Stable Voice WebUI")
     gr.Markdown("This software is open source under the MIT license. The author does not have any control over the software. Users who use the software and distribute the sounds exported by the software are solely responsible. <br>If you do not agree with this clause, you cannot use or reference any codes and files within the software package. See the root directory <b>Agreement-LICENSE.txt</b> for details.")
-    gr.Textbox()
-    gr.Button("Download Assets").click(download_assets)
     
     with gr.Tabs():
+        with gr.Tab("Assets Manager"):
+            output_box = gr.Textbox(label="Output", interactive=False)
+            with gr.Row():
+                select_all_button = gr.Button("Select All")
+                cancel_button = gr.Button("Cancel")
+                download_all_button = gr.Button("Download All")
+                remove_all_button = gr.Button("Remove All")
+            checkboxes = []
+            download_buttons = []
+            remove_buttons = []
+            for asset_name in assets_list:
+                with gr.Row():
+                    checkbox = gr.Checkbox(label=asset_name, value=asset_name in get_preselected_files())
+                    download_button = gr.Button("Download", interactive=asset_name not in get_preselected_files())
+                    remove_button = gr.Button("Remove", interactive=asset_name in get_preselected_files())
+                    
+                    checkboxes.append(checkbox)
+                    download_buttons.append(download_button)
+                    remove_buttons.append(remove_button)
+
+                    def download_click(asset_name=asset_name, checkbox=checkbox):
+                        message = download_file(asset_name)
+                        is_downloaded, is_not_downloaded = update_buttons(asset_name)
+                        return message, gr.update(interactive=is_not_downloaded), gr.update(interactive=is_downloaded), gr.update(value=True)
+
+                    def remove_click(asset_name=asset_name, checkbox=checkbox):
+                        message = remove_file(asset_name)
+                        is_downloaded, is_not_downloaded = update_buttons(asset_name)
+                        return message, gr.update(interactive=is_not_downloaded), gr.update(interactive=is_downloaded), gr.update(value=False)
+
+                    download_button.click(download_click, outputs=[output_box, download_button, remove_button, checkbox])
+                    remove_button.click(remove_click, outputs=[output_box, download_button, remove_button, checkbox])
+            
+            def update_select_all():
+                return [gr.update(value=True) if checkbox.label not in get_preselected_files() else gr.update(value=False) for checkbox in checkboxes]
+            
+            def update_cancel_all():
+                return [gr.update(value=False) if checkbox.label not in get_preselected_files() else gr.update(value=True) for checkbox in checkboxes]
+            
+            def download_all_click():
+                messages = download_all()
+                checkbox_updates = [
+                    gr.update(value=True) if not os.path.exists(os.path.join(assets_dir, "bin/" + checkbox.label if checkbox.label.split(".")[-1] == "exe" else "hubert/" + checkbox.label if "hubert" in checkbox.label else "rmvpe/" + checkbox.label if "rmvpe" in checkbox.label else checkbox.label)) else gr.update(value=True)
+                    for checkbox in checkboxes
+                ]
+                download_button_updates = [
+                    gr.update(interactive=False) if os.path.exists(os.path.join(assets_dir, "bin/" + checkbox.label if checkbox.label.split(".")[-1] == "exe" else "hubert/" + checkbox.label if "hubert" in checkbox.label else "rmvpe/" + checkbox.label if "rmvpe" in checkbox.label else checkbox.label)) else gr.update()
+                    for checkbox in checkboxes
+                ]
+                remove_button_updates = [
+                    gr.update(interactive=True) if os.path.exists(os.path.join(assets_dir, "bin/" + checkbox.label if checkbox.label.split(".")[-1] == "exe" else "hubert/" + checkbox.label if "hubert" in checkbox.label else "rmvpe/" + checkbox.label if "rmvpe" in checkbox.label else checkbox.label)) else gr.update()
+                    for checkbox in checkboxes
+                ]
+                return [messages] + checkbox_updates + download_button_updates + remove_button_updates
+
+            def remove_all_click():
+                selected_files = [checkbox.label for checkbox in checkboxes if checkbox.value and checkbox.label in get_preselected_files()]
+                messages = remove_all(selected_files)
+                checkbox_updates = [
+                    gr.update(value=False) if checkbox.label in selected_files else gr.update()
+                    for checkbox in checkboxes
+                ]
+                download_button_updates = [
+                    gr.update(interactive=True) if checkbox.label in selected_files else gr.update()
+                    for checkbox in checkboxes
+                ]
+                remove_button_updates = [
+                    gr.update(interactive=False) if checkbox.label in selected_files else gr.update()
+                    for checkbox in checkboxes
+                ]
+                return [messages] + checkbox_updates + download_button_updates + remove_button_updates
+
+            select_all_button.click(fn=update_select_all, outputs=checkboxes)
+            cancel_button.click(fn=update_cancel_all, outputs=checkboxes)
+            download_all_button.click(download_all_click, outputs=[output_box] + checkboxes + download_buttons + remove_buttons)
+            remove_all_button.click(remove_all_click, outputs=[output_box] + checkboxes + download_buttons + remove_buttons)
+
+
+
+        # Model Inference
         with gr.TabItem("Model Inference"):
             with gr.Row():
                 sid0 = gr.Dropdown("Inferencing voice:", choices=sorted(names))
