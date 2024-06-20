@@ -88,11 +88,11 @@ if __name__ == "__main__":
     voice_name = "youinna"
     voice_name = "son-announcer"
     
-    original_voice = base_dir / "outputs" / "_google_tts_korean_0.mp3"
+    original_voice = base_dir / "outputs" / "_google_tts_korean_1.mp3"
     # original_voice = "male_base_voice.wav"
     output_folder = output_file_path = base_dir / "outputs" / voice_name
     os.makedirs(output_folder, exist_ok=True)
-    output_file_path = output_folder / f"cloned_google_tts_korean_0.wav"
+    output_file_path = output_folder / f"cloned_google_tts_korean_1.wav"
 
     try:
         initialize_vc(vc, voice_name)

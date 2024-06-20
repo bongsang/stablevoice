@@ -1,5 +1,5 @@
-# Stable Voice WebUI
-Stable Voice WebUI is not an independent model but a framework designed to facilitate easy comparison and analysis of various upcoming voice clone models in one place. It aims to promote global collaboration and development toward establishing a global standard. Initially, This is based on RVC-Project.
+# Stable Voice UI
+Stable Voice WebUI is a framework designed to facilitate easy comparison and analysis of various upcoming voice clone models in one place. It aims to promote global collaboration and development toward establishing a global standard. Initially, This is based on RVC-Project.
 
 
 ## Environment
