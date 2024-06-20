@@ -49,18 +49,18 @@ You don't need to install Fairseq separately. There are many errors when trying 
 ```
 
 ### Install FFMPEG
-For Windows, add "stablevoice/bin/" to the system $PATH
+For Windows, download ffmpeg from the official site.
+[https://ffmpeg.org/download.html](https://ffmpeg.org/download.html)
 
-For Linux, install ffmpeg directly.
+For Linux, install ffmpeg by apt.
 ```bash
 sudo apt update
 sudo apt install ffmpeg
 ```
+- Be sure! Include the FFMPEG path to your system $PATH variable.
 
 ## Run
-Simple! "Ctrl+F5 in main.py" ^^
 
-Or,
 ```bash
 (.venv) stablevoice> python main.py
 ```
