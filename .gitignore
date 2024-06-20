@@ -28,5 +28,6 @@ ffmpeg.*
 ffprobe.*
 *.pyi
 
-
-/dataset/*
+# User Data
+/outputs
+/sources
