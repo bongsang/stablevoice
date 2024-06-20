@@ -1,5 +1,5 @@
 # Stable Voice UI
-Stable Voice WebUI is a framework designed to facilitate easy comparison and analysis of various upcoming voice clone models in one place. It aims to promote global collaboration and development toward establishing a global standard. Initially, This is based on RVC-Project.
+Stable Voice WebUI is a framework designed to facilitate easy comparison and analysis of various upcoming voice models in one place. It aims to promote global collaboration and development toward establishing a global standard.
 
 
 ## Environment
@@ -57,7 +57,7 @@ For Linux, install ffmpeg by apt.
 sudo apt update
 sudo apt install ffmpeg
 ```
-- Be sure! Include the FFMPEG path to your system $PATH variable.
+Include the FFMPEG path to your system $PATH variable.
 
 ## Run
 
@@ -65,7 +65,7 @@ sudo apt install ffmpeg
 (.venv) stablevoice> python main.py
 ```
 
-## Base models
+## Related projects
 + [Retrieval-based-Voice-Conversion-WebUI](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/)
   + The pretrained model is trained and tested by [yxlllc](https://github.com/yxlllc/RMVPE) and [RVC-Boss](https://github.com/RVC-Boss).
 + [ContentVec](https://github.com/auspicious3000/contentvec/)
